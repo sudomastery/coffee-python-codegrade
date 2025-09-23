@@ -17,8 +17,6 @@ class Customer:
     @name.setter
     def name(self, value):
 
-
-
         #check if string lenght is between 1 and 15 characters
         if not isinstance(value, str):
             raise ValueError("Name must be a string")
@@ -27,4 +25,8 @@ class Customer:
         self._name = value
 
 
-        #to declare other functions
+        #to declare other methods
+        def orders(self)
+            return [order for order in Order.all() if order.customer == self]
+        def coffees(self):
+            from coffee import Coffee
