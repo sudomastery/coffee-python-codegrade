@@ -1,22 +1,16 @@
-<div align="center">
-
 # Coffee / Customer / Order
 
-Minimal Python OOP project demonstrating a classic many‑to‑many relationship modeled explicitly with a join class.
+In‑memory Python implementation of a many‑to‑many relationship using an explicit join class.
 
-`Customer  --<  Order  >--  Coffee`
+Relationship: `Customer  --<  Order  >--  Coffee`
 
-</div>
+## 1. Scope
+Demonstrates:
+* Plain Python object relationships (no database / ORM)
+* Input validation and controlled mutability
+* Simple aggregate queries over in‑memory collections
 
-## 1. Purpose
-This repository is a compact, readable reference for:
-* Modeling relationships with plain Python classes (no ORM, no database)
-* Applying simple validation & encapsulation (read‑only vs mutable fields)
-* Deriving aggregate data (counts, averages, unique lists) from in‑memory objects
-
-Great for beginners practicing reasoning about object graphs before introducing frameworks.
-
-## 2. Quick Start
+## 2. Setup
 
 ```bash
 git clone <your-fork-or-repo-url> coffee-oop
@@ -27,7 +21,7 @@ pip install -r requirements.txt  # (pytest only)
 python -q
 ```
 
-Then in the Python REPL:
+Python REPL example:
 
 ```python
 from customer import Customer
@@ -42,7 +36,7 @@ print(latte.average_price())     # 5.5
 print(latte.customers())         # [Customer(name='Alice')]
 ```
 
-## 3. Project Structure
+## 3. Structure
 ```
 coffee.py    # Coffee class (read‑only name, order aggregates)
 customer.py  # Customer class (mutable validated name, helpers)
@@ -50,7 +44,7 @@ order.py     # Order join class (validates links & price range)
 tests/       # Pytest suite exercising validation & aggregates
 ```
 
-## 4. Domain Model Overview
+## 4. Model
 
 ### Coffee
 | Aspect | Details |
@@ -73,16 +67,16 @@ tests/       # Pytest suite exercising validation & aggregates
 | Price | float in range 1.0–10.0 (int auto‑cast to float) |
 | Immutability | `customer`, `coffee`, `price` exposed as read‑only properties |
 
-## 5. Validation Rules (Summary)
+## 5. Validation
 * Coffee.name: string, length ≥ 3, set once (no setter)
 * Customer.name: string, 1–15 inclusive, can be reassigned
 * Order.customer: must be a `Customer` instance
 * Order.coffee: must be a `Coffee` instance
 * Order.price: float (int converted) and 1.0 ≤ price ≤ 10.0
 
-## 6. Usage Examples
+## 6. Examples
 
-### Multiple Orders & Aggregates
+### Aggregates
 ```python
 from customer import Customer
 from coffee import Coffee
@@ -99,7 +93,7 @@ print(latte.average_price())   # 4.75
 print(latte.customers())       # [Customer(name='Alice'), Customer(name='Bob')]
 ```
 
-### Preventing Invalid Data
+### Invalid Data Rejection
 ```python
 from coffee import Coffee
 from order import Order
@@ -116,36 +110,29 @@ except ValueError as e:
 	print(e)
 ```
 
-## 7. Running Tests
-Pytest is included for fast feedback.
+## 7. Tests
+Pytest suite covers validation, relationship navigation, and aggregates.
 
 ```bash
 pytest -q
 ```
 
-What is covered:
-* Coffee name validation & immutability
-* Orders filtered per Coffee
-* Unique customers per Coffee
-* Aggregate counts & averages (including empty case)
-
 ## 8. Design Notes
-* No external persistence—everything lives in memory via class-level `_all` lists.
-* Imports inside methods avoid circular dependency issues (`order` <-> `customer` / `coffee`).
-* Read‑only vs mutable distinction teaches encapsulation patterns with properties.
-* Simplicity favored over clever abstractions for educational clarity.
+* Data stored only in class-level `_all` lists.
+* Local imports inside methods avoid circular references.
+* Read‑only vs mutable properties are explicit.
+* Code favors clarity over abstraction.
 
-## 9. Extending the Model (Ideas)
-* Add timestamps to `Order` and sort outputs.
-* Introduce removal methods (`Customer.delete()` etc.).
-* Add filtering (e.g., coffees ordered above an average threshold).
-* Persist to JSON / SQLite for session durability.
+## 9. Possible Extensions
+* Timestamp orders
+* Deletion / archival facilities
+* Additional query helpers
+* Persistence layer (JSON / SQLite)
 
 ## 10. Contributing
-Fork, create a feature branch, keep style consistent, and add/adjust tests when changing behavior. Open a PR describing rationale and edge cases.
+Submit pull requests with clear rationale and accompanying tests for behavior changes.
 
 ## 11. License
-See `LICENSE` for details (MIT unless otherwise specified there).
+Refer to `LICENSE` (MIT if not otherwise specified).
 
----
-Happy brewing & learning!
+
